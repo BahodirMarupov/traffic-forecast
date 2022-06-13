@@ -34,11 +34,18 @@ def main():
         date = flask.request.form['date']
         time = flask.request.form['time']
         col = date + " " + time 
-        x=df.loc[df['5 Minutes'] ==col] 
+        x=df.loc[df['5 Minutes'] == col]
+        print("x", x)
         true = x["Flow (Veh/5 Minutes)"].values
-        t_value = np.asscalar(true)
+        # t_value = np.asscalar(true)
         index = x["Flow (Veh/5 Minutes)"].index
-        index = index[0]
+        print(index)
+        if len(index) >0:
+            print(index[0])
+            index = index[0]
+        else: index = 20;
+
+        print(len(predicted_lstm))
         pred_LSTM = predicted_lstm[index].astype(int) 
         pred_GRU = predicted_GRU[index].astype(int) 
         return flask.render_template('index.html',true_val=true,pred_val_LSTM=pred_LSTM,pred_val_GRU=pred_GRU)
